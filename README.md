@@ -102,7 +102,7 @@ The current implementation uses rule-based logic that simulates LLM reasoning. F
 
 ```python
 # Example OpenAI integration in generate_llm_trade_proposal():
-import openai
+from openai import OpenAI
 
 def generate_llm_trade_proposal(self, target_agent):
     prompt = f"""You are a {self.persona} trading agent.
@@ -112,7 +112,8 @@ def generate_llm_trade_proposal(self, target_agent):
     
     Propose a trade that benefits you based on your {self.persona} personality."""
     
-    response = openai.ChatCompletion.create(
+    client = OpenAI()  # Uses OPENAI_API_KEY from environment
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "user", "content": prompt}]
     )

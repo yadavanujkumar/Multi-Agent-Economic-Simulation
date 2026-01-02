@@ -120,12 +120,16 @@ class TradingAgent(Agent):
         if self.inventory[request_resource] < request_amount:
             return False, 0.0
         
+        # Reject invalid trades where nothing is offered
+        if offer_amount == 0:
+            return False, 0.0
+        
         # Calculate utility gain/loss
         utility_gain = self.calculate_utility(offer_resource, offer_amount)
         utility_loss = self.calculate_utility(request_resource, request_amount)
         
         # Calculate base price ratio
-        base_price = request_amount / offer_amount if offer_amount > 0 else float('inf')
+        base_price = request_amount / offer_amount
         
         # Adjust acceptance threshold based on persona
         if self.persona == "Aggressive":

@@ -100,8 +100,16 @@ def persona_comparison_example():
         for _ in range(15):
             model.step()
         
+        # Convert transactions to DataFrame for analysis
+        if model.transactions:
+            transactions_df = pd.DataFrame([
+                {'price': t.price} for t in model.transactions
+            ])
+        else:
+            transactions_df = pd.DataFrame()
+        
         # Collect results
-        avg_price = sum(t.price for t in model.transactions) / len(model.transactions) if model.transactions else 0
+        avg_price = transactions_df['price'].mean() if len(model.transactions) > 0 else 0
         
         results.append({
             'scenario': scenario_name,
